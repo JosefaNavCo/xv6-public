@@ -311,6 +311,23 @@ wait(void)
   }
 }
 
+int getprocs(void)
+{
+  struct proc *p;
+  int cont = 0;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if(p->state == RUNNABLE || p->state == RUNNING ||p->state  == SLEEPING)
+    {
+     cont++;
+
+    }
+  }
+  release(&ptable.lock);
+        return cont;
+}
+
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
