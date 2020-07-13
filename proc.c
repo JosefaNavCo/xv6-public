@@ -267,6 +267,28 @@ exit(void)
   panic("zombie exit");
 }
 
+uint translate(const void *va)
+{
+
+  uint offset = (uint)va & 0xFFF;
+  //Get a process to get into a page table.
+  struct proc *p;
+  p = ptable.proc;
+
+  //Get the pg directory
+  pde_t *pgdir = p->pgdir;
+
+  pte_t *pte;
+  pte = walkpgdir(pgdir, va, 0);
+
+  uint paddress = PTE_ADDR(pte);
+
+  //uint ppaddress = V2P(pte);
+
+  // return pde;
+  return paddress | offset;
+}
+
 // Wait for a child process to exit and return its pid.
 // Return -1 if this process has no children.
 int

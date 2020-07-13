@@ -57,6 +57,16 @@ sys_sbrk(void)
 }
 
 int
+sys_translate(void)
+{
+  int va;
+  if(argint(0,&va) < 0){
+    return -1;
+  }
+  return translate((void *)va);
+}
+
+int
 sys_sleep(void)
 {
   int n;
